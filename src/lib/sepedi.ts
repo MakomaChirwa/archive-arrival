@@ -313,5 +313,12 @@ export const sepedi: Record<string, string> = {
   "Privacy": "Sephiri",
   "About": "Ka ga rena",
   "Help": "Thušo",
-  "Made in South Africa for women building their future.": "E hlamilwe Afrika Borwa bakeng sa basadi bao ba agago bokamoso bja bona."
+  "Made in South Africa for women building their future.": "E hlamilwe Afrika Borwa bakeng sa basadi bao ba agago bokamoso bja bona.",
+  "WhatsApp group": "Sehlopha sa WhatsApp",
+  "SheConnect community group": "Sehlopha sa setšhaba sa SheConnect",
+  "Chat with other members, ask questions and share what you’re learning.": "Bolela le maloko a mangwe, botšiša dipotšišo gomme o abele seo o se ithutago.",
+  "Join the WhatsApp group": "E tsene sehlopeng sa WhatsApp",
+  "WhatsApp opens in a new tab.": "WhatsApp e bulela ka theepeng e mpsha.",
+  "SheConnect study group": "Sehlopha sa go ithuta sa SheConnect",
+  "A second space to connect with members and keep the conversation going.": "Sebaka se seswe sa go kgokagana le maloko le go tšwetša poledišano pele."
 };
