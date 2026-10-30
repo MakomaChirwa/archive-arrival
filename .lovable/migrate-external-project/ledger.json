@@ -1,0 +1,3 @@
+[{"capability":"code","source":"Figma Make React SPA","outcome":"migrate","status":"done","next_action":null},
+{"capability":"schema/records/auth/storage/webhooks","source":"none detected","outcome":"n/a","status":"verified-absent","next_action":null},
+{"capability":"external links (WhatsApp channel)","source":"App.tsx","outcome":"preserve","status":"done","next_action":null}]
