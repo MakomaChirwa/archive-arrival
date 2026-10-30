@@ -1,0 +1,1 @@
+export const sepedi: Record<string, string> = {};
