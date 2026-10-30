@@ -8,3 +8,7 @@
 > Commits you push to the connected branch sync back to Lovable and show up in
 > the editor, so keep the branch in a working state.
 <!-- LOVABLE:END -->
+
+## Localization
+- Keep UI translations in a shared language context and dictionary; language controls share one preference so navigation and forms never diverge.
+- Preserve stable English option values independently of translated labels so filters continue to match their data in either language.
