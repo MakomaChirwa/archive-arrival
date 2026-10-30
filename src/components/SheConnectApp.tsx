@@ -271,7 +271,7 @@ function PathDetail({ go }: { go: (s: Screen) => void }) {
   ];
   return <div className="detail-layout">
     <div className="path-summary"><button className="back-link" onClick={() => go("learn")}>← All learning paths</button><div className="path-icon hero-path">◌</div><Tag tone="green">Free beginner path</Tag><h1>UX Design foundations</h1><p>Learn how to design simple digital experiences that work for real people.</p><div className="summary-meta"><span><Icon name="clock" /> 4 weeks</span><span><Icon name="signal" /> Low-data</span></div><Progress value={25} /><small>1 of 4 steps completed</small></div>
-    <div className="lesson-panel"><h2>Your learning steps</h2><p>Save your progress automatically as you go.</p><div className="step-list">{steps.map((step, i) => <div className={`lesson-step ${step[3] ? "done" : ""}`} key={step[0]}>
+    <div className="lesson-panel"><h2>Your learning steps</h2><p>Save your progress automatically as you go.</p><div className="step-list">{steps.map((step, i) => <div className={`lesson-step ${step[3] ? "done" : ""}`} key={String(step[0])}>
       <span className="step-number">{step[3] ? <Icon name="check" size={16} /> : i + 1}</span><div><h3>{step[0]}</h3><p>{step[1]}</p><small><Icon name="clock" size={14} /> {step[2]} · Free resource</small></div><button aria-label={`Open ${step[0]}`}><Icon name="arrow" /></button>
     </div>)}</div>
     <div className="mentor-nudge"><div><Icon name="people" /><span><strong>Want help along the way?</strong><p>A mentor can answer questions and encourage you.</p></span></div><Button variant="pink" onClick={() => go("mentors")}>Find a mentor</Button></div></div>
