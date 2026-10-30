@@ -328,6 +328,17 @@ footer { background: var(--purple-dark); color: white; padding: 35px 22px 95px; 
 footer > small { color: #bcaac9; }
 .data-saver .optional-visual { display: none !important; }
 
+/* Allow longer translated labels to wrap without covering adjacent controls. */
+.app button, .app h1, .app h2, .app h3 { overflow-wrap: anywhere; }
+.button { padding-top: 10px; padding-bottom: 10px; }
+.hero-actions { flex-wrap: wrap; }
+.hero-actions .button { min-width: 0; }
+.desktop-rail button { padding-top: 10px; padding-bottom: 10px; }
+.settings label { gap: 12px; flex-wrap: wrap; }
+.settings label > span:first-child { flex-wrap: wrap; }
+.settings select { max-width: 100%; }
+.meta, .summary-meta { flex-wrap: wrap; gap: 8px; }
+
 @media (min-width: 720px) {
   .topbar { padding: 0 30px; height: 74px; }
   .desktop-only { display: inline; }

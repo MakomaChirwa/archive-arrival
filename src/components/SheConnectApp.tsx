@@ -59,7 +59,6 @@ const iconPaths: Record<IconName, ReactNode> = {
 };
 
 function Icon({ name, size = 20 }: { name: IconName; size?: number }) {
-  const { t } = useLanguage();
   return <svg className="icon" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">{iconPaths[name]}</svg>;
 }
 
@@ -80,17 +79,14 @@ const moreItems: { id: Screen; label: string; icon: IconName; sub: string }[] = 
 function Button({ children, onClick, variant = "primary", icon, type = "button", className = "" }: {
   children: ReactNode; onClick?: () => void; variant?: "primary" | "secondary" | "ghost" | "pink"; icon?: IconName; type?: "button" | "submit"; className?: string;
 }) {
-  const { t } = useLanguage();
   return <button type={type} onClick={onClick} className={`button button-${variant} ${className}`}>{children}{icon && <Icon name={icon} size={18} />}</button>;
 }
 
 function Tag({ children, tone = "purple" }: { children: ReactNode; tone?: "purple" | "pink" | "green" | "cream" }) {
-  const { t } = useLanguage();
   return <span className={`tag tag-${tone}`}>{children}</span>;
 }
 
 function Card({ children, className = "", onClick }: { children: ReactNode; className?: string; onClick?: () => void }) {
-  const { t } = useLanguage();
   return <div className={`card ${className}`} onClick={onClick}>{children}</div>;
 }
 
