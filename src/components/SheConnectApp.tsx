@@ -1,4 +1,5 @@
 import { useMemo, useState, type ReactNode } from "react";
+import { LanguageProvider, useLanguage, parseLanguage } from "@/lib/sheconnect-language";
 
 type Screen =
   | "home"
@@ -90,116 +91,123 @@ function Card({ children, className = "", onClick }: { children: ReactNode; clas
 }
 
 function Header({ language, setLanguage, saver, setSaver, menuOpen, setMenuOpen, go }: {
-  language: string; setLanguage: (v: string) => void; saver: boolean; setSaver: (v: boolean) => void; menuOpen: boolean; setMenuOpen: (v: boolean) => void; go: (s: Screen) => void;
+  language: "English" | "Sepedi"; setLanguage: (v: "English" | "Sepedi") => void; saver: boolean; setSaver: (v: boolean) => void; menuOpen: boolean; setMenuOpen: (v: boolean) => void; go: (s: Screen) => void;
 }) {
+  const { t } = useLanguage();
   return <header className="topbar">
-    <button className="brand" onClick={() => go("home")} aria-label="SheConnect home">
-      <span className="brand-mark">S</span><span>SheConnect</span>
+    <button className="brand" onClick={() => go("home")} aria-label={t("SheConnect home")}>
+      <span className="brand-mark">{t("S")}</span><span>{t("SheConnect")}</span>
     </button>
     <div className="header-tools">
-      <button className="language-toggle" onClick={() => setLanguage(language === "English" ? "Sepedi" : "English")} aria-label="Change language">
+      <button className="language-toggle" onClick={() => setLanguage(language === "English" ? "Sepedi" : "English")} aria-label={t("Change language")}>
         <Icon name="globe" size={17} /><span>{language === "English" ? "EN" : "SEP"}</span>
       </button>
       <label className="saver-control">
-        <span className="desktop-only">Data saver</span>
+        <span className="desktop-only">{t("Data saver")}</span>
         <input type="checkbox" checked={saver} onChange={e => setSaver(e.target.checked)} />
         <span className="switch" aria-hidden="true" />
       </label>
-      <button className="icon-button" onClick={() => setMenuOpen(!menuOpen)} aria-label="Open menu"><Icon name={menuOpen ? "close" : "menu"} /></button>
+      <button className="icon-button" onClick={() => setMenuOpen(!menuOpen)} aria-label={t("Open menu")}><Icon name={menuOpen ? "close" : "menu"} /></button>
     </div>
   </header>;
 }
 
 function BottomNav({ screen, go }: { screen: Screen; go: (s: Screen) => void }) {
-  return <nav className="bottom-nav" aria-label="Main navigation">{navItems.map(item =>
+  const { t } = useLanguage();
+  return <nav className="bottom-nav" aria-label={t("Main navigation")}>{navItems.map(item =>
     <button key={item.id} className={screen === item.id ? "active" : ""} onClick={() => go(item.id)}>
-      <Icon name={item.icon} size={21} /><span>{item.label}</span>
+      <Icon name={item.icon} size={21} /><span>{t(item.label)}</span>
     </button>)}</nav>;
 }
 
 function DesktopRail({ screen, go }: { screen: Screen; go: (s: Screen) => void }) {
-  return <aside className="desktop-rail"><div className="rail-label">EXPLORE</div>{navItems.map(item =>
+  const { t } = useLanguage();
+  return <aside className="desktop-rail"><div className="rail-label">{t("EXPLORE")}</div>{navItems.map(item =>
     <button key={item.id} className={screen === item.id ? "active" : ""} onClick={() => go(item.id)}>
-      <Icon name={item.icon} /><span>{item.label}</span>
+      <Icon name={item.icon} /><span>{t(item.label)}</span>
     </button>)}
     <div className="rail-rule" />{moreItems.map(item =>
       <button key={item.id} className={screen === item.id ? "active" : ""} onClick={() => go(item.id)}>
-        <Icon name={item.icon} /><span>{item.label}</span>
+        <Icon name={item.icon} /><span>{t(item.label)}</span>
       </button>)}
   </aside>;
 }
 
 function PageHead({ eyebrow, title, text }: { eyebrow?: string; title: string; text?: string }) {
-  return <div className="page-head">{eyebrow && <div className="eyebrow">{eyebrow}</div>}<h1>{title}</h1>{text && <p>{text}</p>}</div>;
+  const { t } = useLanguage();
+  return <div className="page-head">{eyebrow && <div className="eyebrow">{t(eyebrow)}</div>}<h1>{t(title)}</h1>{text && <p>{t(text)}</p>}</div>;
 }
 
 function Home({ go }: { go: (s: Screen) => void }) {
+  const { t } = useLanguage();
   return <div className="home">
     <section className="hero">
       <div className="hero-copy">
-        <Tag tone="pink">Built for South African women</Tag>
-        <h1>Your future in tech starts here</h1>
-        <p>Discover careers, learn useful skills and meet women who can help you take the next step.</p>
+        <Tag tone="pink">{t("Built for South African women")}</Tag>
+        <h1>{t("Your future in tech starts here")}</h1>
+        <p>{t("Discover careers, learn useful skills and meet women who can help you take the next step.")}</p>
         <div className="hero-actions">
-          <Button onClick={() => go("signup")} icon="spark">Chat with the career guide</Button>
-          <Button onClick={() => go("learn")} variant="secondary" icon="arrow">Browse learning paths</Button>
+          <Button onClick={() => go("signup")} icon="spark">{t("Chat with the career guide")}</Button>
+          <Button onClick={() => go("learn")} variant="secondary" icon="arrow">{t("Browse learning paths")}</Button>
         </div>
-        <span className="microcopy"><Icon name="signal" size={16} /> Designed to use less data</span>
+        <span className="microcopy"><Icon name="signal" size={16} />{" "}{t("Designed to use less data")}</span>
       </div>
-      <div className="hero-visual optional-visual" aria-label="Illustration of a young woman exploring technology">
+      <div className="hero-visual optional-visual" aria-label={t("Illustration of a young woman exploring technology")}>
         <span className="orbit orbit-one" /><span className="orbit orbit-two" />
-        <div className="illustration-person"><div className="hair" /><div className="face" /><div className="body">SC</div></div>
-        <div className="float-card code-card">&lt;/&gt;<span>Build</span></div>
-        <div className="float-card idea-card"><Icon name="spark" /><span>Grow</span></div>
+        <div className="illustration-person"><div className="hair" /><div className="face" /><div className="body">{t("SC")}</div></div>
+        <div className="float-card code-card">{"</>"}<span>{t("Build")}</span></div>
+        <div className="float-card idea-card"><Icon name="spark" /><span>{t("Grow")}</span></div>
       </div>
     </section>
 
     <section className="section-block">
-      <div className="section-intro"><div><span className="eyebrow">MADE FOR YOUR JOURNEY</span><h2>One place. Many possibilities.</h2></div><p>Start where you are. Everything is beginner-friendly.</p></div>
+      <div className="section-intro"><div><span className="eyebrow">{t("MADE FOR YOUR JOURNEY")}</span><h2>{t("One place. Many possibilities.")}</h2></div><p>{t("Start where you are. Everything is beginner-friendly.")}</p></div>
       <div className="benefit-grid">
-        <Card><span className="feature-icon"><Icon name="spark" /></span><h3>Find your direction</h3><p>Answer a few easy questions and discover tech careers that match you.</p><button className="text-link" onClick={() => go("guide")}>Try the guide <Icon name="arrow" size={16} /></button></Card>
-        <Card><span className="feature-icon pink"><Icon name="book" /></span><h3>Learn step by step</h3><p>Free, practical learning paths you can complete on your phone.</p><button className="text-link" onClick={() => go("learn")}>Start learning <Icon name="arrow" size={16} /></button></Card>
-        <Card><span className="feature-icon gold"><Icon name="people" /></span><h3>Grow with support</h3><p>Connect with mentors and a community that wants you to succeed.</p><button className="text-link" onClick={() => go("mentors")}>Meet mentors <Icon name="arrow" size={16} /></button></Card>
+        <Card><span className="feature-icon"><Icon name="spark" /></span><h3>{t("Find your direction")}</h3><p>{t("Answer a few easy questions and discover tech careers that match you.")}</p><button className="text-link" onClick={() => go("guide")}>{t("Try the guide")}{" "}<Icon name="arrow" size={16} /></button></Card>
+        <Card><span className="feature-icon pink"><Icon name="book" /></span><h3>{t("Learn step by step")}</h3><p>{t("Free, practical learning paths you can complete on your phone.")}</p><button className="text-link" onClick={() => go("learn")}>{t("Start learning")}{" "}<Icon name="arrow" size={16} /></button></Card>
+        <Card><span className="feature-icon gold"><Icon name="people" /></span><h3>{t("Grow with support")}</h3><p>{t("Connect with mentors and a community that wants you to succeed.")}</p><button className="text-link" onClick={() => go("mentors")}>{t("Meet mentors")}{" "}<Icon name="arrow" size={16} /></button></Card>
       </div>
     </section>
 
     <section className="role-section">
-      <div className="section-intro"><div><span className="eyebrow">REAL WOMEN, REAL PATHS</span><h2>Women in tech</h2></div><button className="text-link" onClick={() => go("story")}>Read their stories <Icon name="arrow" size={16} /></button></div>
+      <div className="section-intro"><div><span className="eyebrow">{t("REAL WOMEN, REAL PATHS")}</span><h2>{t("Women in tech")}</h2></div><button className="text-link" onClick={() => go("story")}>{t("Read their stories")}{" "}<Icon name="arrow" size={16} /></button></div>
       <div className="role-strip">
         {[
           ["NM", "Naledi M.", "Data analyst", "Johannesburg"],
           ["AZ", "Ayesha Z.", "UX designer", "Cape Town"],
           ["TN", "Thandi N.", "Cybersecurity", "Durban"],
         ].map((person, i) => <Card key={person[0]} className="role-card" onClick={() => go("story")}>
-          <div className={`avatar optional-visual avatar-${i}`}>{person[0]}</div><div><h3>{person[1]}</h3><strong>{person[2]}</strong><p>{person[3]}</p></div><Icon name="arrow" />
+          <div className={`avatar optional-visual avatar-${i}`}>{person[0]}</div><div><h3>{person[1]}</h3><strong>{t(person[2])}</strong><p>{person[3]}</p></div><Icon name="arrow" />
         </Card>)}
       </div>
     </section>
-    <section className="join-banner"><div><span className="eyebrow light">YOUR NEXT STEP CAN BE SMALL</span><h2>Ready to see where tech could take you?</h2></div><Button variant="pink" onClick={() => go("signup")} icon="arrow">Create your free profile</Button></section>
+    <section className="join-banner"><div><span className="eyebrow light">{t("YOUR NEXT STEP CAN BE SMALL")}</span><h2>{t("Ready to see where tech could take you?")}</h2></div><Button variant="pink" onClick={() => go("signup")} icon="arrow">{t("Create your free profile")}</Button></section>
   </div>;
 }
 
 function SignUp({ go }: { go: (s: Screen) => void }) {
+  const { t, language, setLanguage } = useLanguage();
   const [submitted, setSubmitted] = useState(false);
   return <div className="narrow-page">
     <PageHead eyebrow="STEP 1 OF 3" title="Let’s get to know you" text="Just the basics, so we can make your experience useful. You can change these later." />
     <form className="form-card" onSubmit={e => { e.preventDefault(); setSubmitted(true); if ((e.currentTarget.elements.namedItem("consent") as HTMLInputElement).checked) go("guide"); }}>
-      <label className="field"><span>Name or nickname</span><input name="name" placeholder="What should we call you?" required /></label>
-      <label className="field"><span>Where are you in your journey?</span><select defaultValue=""><option value="" disabled>Choose your education level</option><option>Grade 10–12</option><option>University or college student</option><option>Graduate or looking for work</option><option>Early in my career</option></select></label>
-      <fieldset><legend>What are you interested in? <small>Choose all that fit</small></legend><div className="check-grid">
-        {["Design & creativity", "Solving problems", "Working with data", "Helping people", "Building things", "I’m not sure yet"].map(item => <label className="check-card" key={item}><input type="checkbox" /><span className="check-box"><Icon name="check" size={14} /></span>{item}</label>)}
+      <label className="field"><span>{t("Name or nickname")}</span><input name="name" placeholder={t("What should we call you?")} required /></label>
+      <label className="field"><span>{t("Where are you in your journey?")}</span><select defaultValue=""><option value="" disabled>{t("Choose your education level")}</option><option value={"Grade 10–12"}>{t("Grade 10–12")}</option><option value={"University or college student"}>{t("University or college student")}</option><option value={"Graduate or looking for work"}>{t("Graduate or looking for work")}</option><option value={"Early in my career"}>{t("Early in my career")}</option></select></label>
+      <fieldset><legend>{t("What are you interested in?")}{" "}<small>{t("Choose all that fit")}</small></legend><div className="check-grid">
+        {["Design & creativity", "Solving problems", "Working with data", "Helping people", "Building things", "I’m not sure yet"].map(item => <label className="check-card" key={item}><input type="checkbox" /><span className="check-box"><Icon name="check" size={14} /></span>{t(item)}</label>)}
       </div></fieldset>
-      <fieldset><legend>Preferred language</legend><div className="radio-row"><label><input type="radio" name="language" defaultChecked /><span>English</span></label><label><input type="radio" name="language" /><span>Sepedi</span></label></div></fieldset>
-      <div className="privacy-note"><Icon name="shield" /><p><strong>Your information is yours.</strong> We only use it to personalise SheConnect. We protect it in line with POPIA and never sell it.</p></div>
-      <label className="consent"><input name="consent" type="checkbox" /><span className="check-box"><Icon name="check" size={14} /></span><span>I agree to SheConnect using my answers to personalise my experience.</span></label>
-      {submitted && <p className="error-message">Please tick the consent box to continue.</p>}
-      <Button type="submit" icon="arrow" className="full">Continue to career guide</Button>
-      <p className="form-foot">No ID number, address or payment details needed.</p>
+      <fieldset><legend>{t("Preferred language")}</legend><div className="radio-row"><label><input type="radio" name="language" value="English" checked={language === "English"} onChange={() => setLanguage("English")} /><span>{t("English")}</span></label><label><input type="radio" name="language" value="Sepedi" checked={language === "Sepedi"} onChange={() => setLanguage("Sepedi")} /><span>{t("Sepedi")}</span></label></div></fieldset>
+      <div className="privacy-note"><Icon name="shield" /><p><strong>{t("Your information is yours.")}</strong>{" "}{t("We only use it to personalise SheConnect. We protect it in line with POPIA and never sell it.")}</p></div>
+      <label className="consent"><input name="consent" type="checkbox" /><span className="check-box"><Icon name="check" size={14} /></span><span>{t("I agree to SheConnect using my answers to personalise my experience.")}</span></label>
+      {submitted && <p className="error-message">{t("Please tick the consent box to continue.")}</p>}
+      <Button type="submit" icon="arrow" className="full">{t("Continue to career guide")}</Button>
+      <p className="form-foot">{t("No ID number, address or payment details needed.")}</p>
     </form>
   </div>;
 }
 
 function ChatGuide({ go }: { go: (s: Screen) => void }) {
+  const { t } = useLanguage();
   const [step, setStep] = useState(0);
   const [busy, setBusy] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -213,21 +221,21 @@ function ChatGuide({ go }: { go: (s: Screen) => void }) {
     }, 650);
   };
   return <div className="chat-layout">
-    <div className="chat-top"><div><span className="online-dot" /> AI Career Guide</div><div className="chat-links"><button className="text-link" onClick={() => { setStarted(false); setStep(0); }}>Start over</button><button className="text-link" onClick={() => go("learn")}>Skip chat and browse manually</button></div></div>
+    <div className="chat-top"><div><span className="online-dot" />{" "}{t("AI Career Guide")}</div><div className="chat-links"><button className="text-link" onClick={() => { setStarted(false); setStep(0); }}>{t("Start over")}</button><button className="text-link" onClick={() => go("learn")}>{t("Skip chat and browse manually")}</button></div></div>
     <div className="chat-body">
-      {!started && <div className="empty-chat"><span className="bot-avatar"><Icon name="message" size={18} /></span><h2>Your chat is ready</h2><p>Start when you feel ready. It only takes about two minutes.</p><Button onClick={() => setStarted(true)} icon="arrow">Start a new chat</Button></div>}
+      {!started && <div className="empty-chat"><span className="bot-avatar"><Icon name="message" size={18} /></span><h2>{t("Your chat is ready")}</h2><p>{t("Start when you feel ready. It only takes about two minutes.")}</p><Button onClick={() => setStarted(true)} icon="arrow">{t("Start a new chat")}</Button></div>}
       {started && <>
-      <div className="chat-date">TODAY</div>
-      <div className="bot-row"><span className="bot-avatar"><Icon name="spark" size={17} /></span><div className="bubble bot"><strong>Hi, I’m Lindi, your career guide.</strong><p>I’ll ask you a few simple questions to help find tech paths that could suit you. There are no wrong answers.</p></div></div>
-      <div className="bot-row"><span className="bot-avatar"><Icon name="spark" size={17} /></span><div className="bubble bot"><p>Which of these sounds most like you?</p></div></div>
-      {step > 0 && <><div className="bubble user">{replies[step - 1]}</div><div className="bot-row"><span className="bot-avatar"><Icon name="spark" size={17} /></span><div className="bubble bot"><p>{step === 1 ? "Great choice. You may enjoy creating useful, easy-to-use digital experiences." : step === 2 ? "That’s a strong tech skill. Let’s look at paths where curiosity matters." : "That’s completely okay. Trying a short beginner path can help you decide."}</p></div></div></>}
-      {busy && <div className="status-card error-state"><strong>The AI guide is busy.</strong><p>Try the simple questions instead — you’ll still get useful career ideas.</p><Button variant="secondary" onClick={() => setBusy(false)}>Use simple questions</Button></div>}
-      {loading && <div className="bot-row loading-row"><span className="bot-avatar"><Icon name="spark" size={17} /></span><div className="bubble bot typing" aria-label="The AI guide is thinking"><i /><i /><i /></div></div>}
-      {step === 0 && !busy && !loading && <div className="quick-replies">{replies.map((reply, i) => <button key={reply} onClick={() => chooseReply(i + 1)}>{reply}</button>)}<button className="simulate-error" onClick={() => setBusy(true)}>Having trouble?</button></div>}
-      {step > 0 && <div className="chat-next"><p>Ready to see your suggested pathways?</p><Button onClick={() => go("results")} icon="arrow">Show my matches</Button></div>}
+      <div className="chat-date">{t("TODAY")}</div>
+      <div className="bot-row"><span className="bot-avatar"><Icon name="spark" size={17} /></span><div className="bubble bot"><strong>{t("Hi, I’m Lindi, your career guide.")}</strong><p>{t("I’ll ask you a few simple questions to help find tech paths that could suit you. There are no wrong answers.")}</p></div></div>
+      <div className="bot-row"><span className="bot-avatar"><Icon name="spark" size={17} /></span><div className="bubble bot"><p>{t("Which of these sounds most like you?")}</p></div></div>
+      {step > 0 && <><div className="bubble user">{t(replies[step - 1])}</div><div className="bot-row"><span className="bot-avatar"><Icon name="spark" size={17} /></span><div className="bubble bot"><p>{t(step === 1 ? "Great choice. You may enjoy creating useful, easy-to-use digital experiences." : step === 2 ? "That’s a strong tech skill. Let’s look at paths where curiosity matters." : "That’s completely okay. Trying a short beginner path can help you decide.")}</p></div></div></>}
+      {busy && <div className="status-card error-state"><strong>{t("The AI guide is busy.")}</strong><p>{t("Try the simple questions instead — you’ll still get useful career ideas.")}</p><Button variant="secondary" onClick={() => setBusy(false)}>{t("Use simple questions")}</Button></div>}
+      {loading && <div className="bot-row loading-row"><span className="bot-avatar"><Icon name="spark" size={17} /></span><div className="bubble bot typing" aria-label={t("The AI guide is thinking")}><i /><i /><i /></div></div>}
+      {step === 0 && !busy && !loading && <div className="quick-replies">{replies.map((reply, i) => <button key={t(reply)} onClick={() => chooseReply(i + 1)}>{t(reply)}</button>)}<button className="simulate-error" onClick={() => setBusy(true)}>{t("Having trouble?")}</button></div>}
+      {step > 0 && <div className="chat-next"><p>{t("Ready to see your suggested pathways?")}</p><Button onClick={() => go("results")} icon="arrow">{t("Show my matches")}</Button></div>}
       </>}
     </div>
-    <div className="ai-note"><Icon name="shield" size={16} /> AI can make mistakes. You decide.</div>
+    <div className="ai-note"><Icon name="shield" size={16} />{" "}{t("AI can make mistakes. You decide.")}</div>
   </div>;
 }
 
@@ -238,31 +246,35 @@ const paths = [
 ];
 
 function Results({ go }: { go: (s: Screen) => void }) {
+  const { t } = useLanguage();
   return <div><PageHead eyebrow="YOUR CAREER MATCHES" title="You have options worth exploring" text="Based on your answers, these pathways could be a good place to start. You’re not locked in — try what interests you." />
-    <div className="path-grid results-grid">{paths.map((path, i) => <Card key={path.title} className={i === 0 ? "path-card featured" : "path-card"}>
-      <div className="path-top"><span className="path-icon">{path.icon}</span><Tag tone={i === 0 ? "pink" : "purple"}>{path.match}</Tag></div><h2>{path.title}</h2><p>{path.desc}</p>
-      <div className="why-box"><strong>Why this suits you</strong><p>{path.why}</p></div>
-      <Button className="full" variant={i === 0 ? "primary" : "secondary"} onClick={() => go("path")} icon="arrow">Start learning</Button>
+    <div className="path-grid results-grid">{paths.map((path, i) => <Card key={t(path.title)} className={i === 0 ? "path-card featured" : "path-card"}>
+      <div className="path-top"><span className="path-icon">{path.icon}</span><Tag tone={i === 0 ? "pink" : "purple"}>{t(path.match)}</Tag></div><h2>{t(path.title)}</h2><p>{t(path.desc)}</p>
+      <div className="why-box"><strong>{t("Why this suits you")}</strong><p>{t(path.why)}</p></div>
+      <Button className="full" variant={i === 0 ? "primary" : "secondary"} onClick={() => go("path")} icon="arrow">{t("Start learning")}</Button>
     </Card>)}</div>
-    <div className="reassure"><Icon name="heart" /><div><strong>Not sure yet?</strong><p>That’s normal. Start with any short lesson and change direction whenever you like.</p></div></div>
+    <div className="reassure"><Icon name="heart" /><div><strong>{t("Not sure yet?")}</strong><p>{t("That’s normal. Start with any short lesson and change direction whenever you like.")}</p></div></div>
   </div>;
 }
 
 function Progress({ value }: { value: number }) {
-  return <div className="progress" aria-label={`${value}% complete`}><span style={{ width: `${value}%` }} /></div>;
+  const { t } = useLanguage();
+  return <div className="progress" aria-label={`${value}% ${t("complete")}`}><span style={{ width: `${value}%` }} /></div>;
 }
 
 function Learning({ go }: { go: (s: Screen) => void }) {
+  const { t } = useLanguage();
   return <div><PageHead eyebrow="LEARNING PATHS" title="Build skills, one step at a time" text="Beginner-friendly lessons and free resources chosen to work well on mobile." />
-    <div className="filter-scroll"><button className="pill active">All paths</button><button className="pill">Design</button><button className="pill">Coding</button><button className="pill">Data</button><button className="pill">Cybersecurity</button></div>
-    <div className="learning-list">{paths.map((path, i) => <Card key={path.title} className="learning-card">
-      <div className={`path-icon large tone-${i}`}>{path.icon}</div><div className="learning-copy"><div className="tag-row"><Tag tone="green">Free</Tag><Tag tone="cream"><Icon name="signal" size={13} /> Low-data friendly</Tag></div><h2>{path.title} foundations</h2><p>{path.desc}</p><div className="meta"><span><Icon name="clock" size={16} /> {path.time}</span><span>{path.progress}% complete</span></div><Progress value={path.progress} /></div>
-      <Button variant="secondary" onClick={() => go("path")} icon="arrow">{i ? "View path" : "Continue"}</Button>
+    <div className="filter-scroll"><button className="pill active">{t("All paths")}</button><button className="pill">{t("Design")}</button><button className="pill">{t("Coding")}</button><button className="pill">{t("Data")}</button><button className="pill">{t("Cybersecurity")}</button></div>
+    <div className="learning-list">{paths.map((path, i) => <Card key={t(path.title)} className="learning-card">
+      <div className={`path-icon large tone-${i}`}>{path.icon}</div><div className="learning-copy"><div className="tag-row"><Tag tone="green">{t("Free")}</Tag><Tag tone="cream"><Icon name="signal" size={13} />{" "}{t("Low-data friendly")}</Tag></div><h2>{t(path.title)}{" "}{t("foundations")}</h2><p>{t(path.desc)}</p><div className="meta"><span><Icon name="clock" size={16} /> {t(path.time)}</span><span>{path.progress}{t("% complete")}</span></div><Progress value={path.progress} /></div>
+      <Button variant="secondary" onClick={() => go("path")} icon="arrow">{t(i ? "View path" : "Continue")}</Button>
     </Card>)}</div>
   </div>;
 }
 
 function PathDetail({ go }: { go: (s: Screen) => void }) {
+  const { t } = useLanguage();
   const steps = [
     ["Meet UX design", "Learn what UX designers do and how they solve everyday problems.", "12 min read", true],
     ["Understand your user", "Practice asking good questions and listening without assumptions.", "25 min activity", false],
@@ -270,11 +282,11 @@ function PathDetail({ go }: { go: (s: Screen) => void }) {
     ["Test and improve", "Ask someone to try your idea and learn from their feedback.", "20 min activity", false],
   ];
   return <div className="detail-layout">
-    <div className="path-summary"><button className="back-link" onClick={() => go("learn")}>← All learning paths</button><div className="path-icon hero-path">◌</div><Tag tone="green">Free beginner path</Tag><h1>UX Design foundations</h1><p>Learn how to design simple digital experiences that work for real people.</p><div className="summary-meta"><span><Icon name="clock" /> 4 weeks</span><span><Icon name="signal" /> Low-data</span></div><Progress value={25} /><small>1 of 4 steps completed</small></div>
-    <div className="lesson-panel"><h2>Your learning steps</h2><p>Save your progress automatically as you go.</p><div className="step-list">{steps.map((step, i) => <div className={`lesson-step ${step[3] ? "done" : ""}`} key={String(step[0])}>
-      <span className="step-number">{step[3] ? <Icon name="check" size={16} /> : i + 1}</span><div><h3>{step[0]}</h3><p>{step[1]}</p><small><Icon name="clock" size={14} /> {step[2]} · Free resource</small></div><button aria-label={`Open ${step[0]}`}><Icon name="arrow" /></button>
+    <div className="path-summary"><button className="back-link" onClick={() => go("learn")}>{t("← All learning paths")}</button><div className="path-icon hero-path">{t("◌")}</div><Tag tone="green">{t("Free beginner path")}</Tag><h1>{t("UX Design foundations")}</h1><p>{t("Learn how to design simple digital experiences that work for real people.")}</p><div className="summary-meta"><span><Icon name="clock" />{" "}{t("4 weeks")}</span><span><Icon name="signal" />{" "}{t("Low-data")}</span></div><Progress value={25} /><small>{t("1 of 4 steps completed")}</small></div>
+    <div className="lesson-panel"><h2>{t("Your learning steps")}</h2><p>{t("Save your progress automatically as you go.")}</p><div className="step-list">{steps.map((step, i) => <div className={`lesson-step ${step[3] ? "done" : ""}`} key={String(step[0])}>
+      <span className="step-number">{step[3] ? <Icon name="check" size={16} /> : i + 1}</span><div><h3>{t(String(step[0]))}</h3><p>{t(String(step[1]))}</p><small><Icon name="clock" size={14} /> {t(String(step[2]))}{" "}{t("· Free resource")}</small></div><button aria-label={`Open ${t(String(step[0]))}`}><Icon name="arrow" /></button>
     </div>)}</div>
-    <div className="mentor-nudge"><div><Icon name="people" /><span><strong>Want help along the way?</strong><p>A mentor can answer questions and encourage you.</p></span></div><Button variant="pink" onClick={() => go("mentors")}>Find a mentor</Button></div></div>
+    <div className="mentor-nudge"><div><Icon name="people" /><span><strong>{t("Want help along the way?")}</strong><p>{t("A mentor can answer questions and encourage you.")}</p></span></div><Button variant="pink" onClick={() => go("mentors")}>{t("Find a mentor")}</Button></div></div>
   </div>;
 }
 
@@ -285,31 +297,35 @@ const mentors = [
 ];
 
 function Mentors({ go }: { go: (s: Screen) => void }) {
+  const { t } = useLanguage();
   return <div><PageHead eyebrow="MENTORS & ROLE MODELS" title="You don’t have to figure it out alone" text="Meet women in tech who volunteer their time to share guidance, experience and encouragement." />
-    <div className="filter-scroll"><button className="pill active">All mentors</button><button className="pill">Design</button><button className="pill">Development</button><button className="pill">Data</button></div>
-    <div className="mentor-grid">{mentors.map(m => <Card className="mentor-card" key={m.name}><div className={`mentor-avatar optional-visual mentor-${m.tone}`}>{m.initials}<span /></div><div className="mentor-info"><h2>{m.name}</h2><p className="job-title">{m.title}</p><div className="tag-row">{m.skills.map(s => <Tag key={s}>{s}</Tag>)}</div><p className="language"><Icon name="globe" size={15} /> {m.languages}</p><Button className="full" onClick={() => go("mentor-request")}>Request a mentor</Button></div></Card>)}</div>
-    <Card className="role-promo"><div className="role-illustration optional-visual">“</div><div><span className="eyebrow">ROLE-MODEL STORY</span><h2>“I started coding with only a borrowed phone.”</h2><p>Read Neo’s story of moving from a small town in Limpopo to her first role in cloud support.</p><button className="text-link" onClick={() => go("story")}>Read Neo’s story <Icon name="arrow" size={16} /></button></div></Card>
+    <div className="filter-scroll"><button className="pill active">{t("All mentors")}</button><button className="pill">{t("Design")}</button><button className="pill">{t("Development")}</button><button className="pill">{t("Data")}</button></div>
+    <div className="mentor-grid">{mentors.map(m => <Card className="mentor-card" key={m.name}><div className={`mentor-avatar optional-visual mentor-${m.tone}`}>{m.initials}<span /></div><div className="mentor-info"><h2>{m.name}</h2><p className="job-title">{t(m.title)}</p><div className="tag-row">{m.skills.map(s => <Tag key={t(s)}>{t(s)}</Tag>)}</div><p className="language"><Icon name="globe" size={15} /> {m.languages}</p><Button className="full" onClick={() => go("mentor-request")}>{t("Request a mentor")}</Button></div></Card>)}</div>
+    <Card className="role-promo"><div className="role-illustration optional-visual">{t("“")}</div><div><span className="eyebrow">{t("ROLE-MODEL STORY")}</span><h2>{t("“I started coding with only a borrowed phone.”")}</h2><p>{t("Read Neo’s story of moving from a small town in Limpopo to her first role in cloud support.")}</p><button className="text-link" onClick={() => go("story")}>{t("Read Neo’s story")}{" "}<Icon name="arrow" size={16} /></button></div></Card>
   </div>;
 }
 
 function MentorRequest({ go }: { go: (s: Screen) => void }) {
+  const { t } = useLanguage();
   return <div className="narrow-page"><PageHead eyebrow="MENTOR REQUEST" title="Ask Lerato for support" text="Tell us what you’d like help with. Keep it simple — no private contact details needed." />
     <form className="form-card" onSubmit={e => { e.preventDefault(); go("confirmation"); }}>
-      <div className="selected-mentor"><div className="mini-avatar">LM</div><div><strong>Lerato Molefe</strong><p>Product Designer · English, Sepedi</p></div></div>
-      <label className="field"><span>What would you like help with?</span><select required defaultValue=""><option value="" disabled>Choose a topic</option><option>Understanding a career</option><option>Choosing a learning path</option><option>CV or interview support</option><option>Starting my first project</option></select></label>
-      <label className="field"><span>Write a short message</span><textarea rows={5} placeholder="Hi Lerato, I’m learning about UX design and would like help with..." required /><small>Do not share your phone number, address or ID number.</small></label>
-      <label className="field"><span>How should we contact you?</span><select><option>Message inside SheConnect</option><option>Email notification</option></select></label>
-      <label className="consent"><input type="checkbox" required /><span className="check-box"><Icon name="check" size={14} /></span><span>I understand that mentors are volunteers and may take a few days to reply.</span></label>
-      <Button type="submit" className="full" icon="arrow">Send mentor request</Button>
+      <div className="selected-mentor"><div className="mini-avatar">{t("LM")}</div><div><strong>{t("Lerato Molefe")}</strong><p>{t("Product Designer · English, Sepedi")}</p></div></div>
+      <label className="field"><span>{t("What would you like help with?")}</span><select required defaultValue=""><option value="" disabled>{t("Choose a topic")}</option><option value={"Understanding a career"}>{t("Understanding a career")}</option><option value={"Choosing a learning path"}>{t("Choosing a learning path")}</option><option value={"CV or interview support"}>{t("CV or interview support")}</option><option value={"Starting my first project"}>{t("Starting my first project")}</option></select></label>
+      <label className="field"><span>{t("Write a short message")}</span><textarea rows={5} placeholder={t("Hi Lerato, I’m learning about UX design and would like help with...")} required /><small>{t("Do not share your phone number, address or ID number.")}</small></label>
+      <label className="field"><span>{t("How should we contact you?")}</span><select><option value={"Message inside SheConnect"}>{t("Message inside SheConnect")}</option><option value={"Email notification"}>{t("Email notification")}</option></select></label>
+      <label className="consent"><input type="checkbox" required /><span className="check-box"><Icon name="check" size={14} /></span><span>{t("I understand that mentors are volunteers and may take a few days to reply.")}</span></label>
+      <Button type="submit" className="full" icon="arrow">{t("Send mentor request")}</Button>
     </form>
   </div>;
 }
 
 function Confirmation({ go }: { go: (s: Screen) => void }) {
-  return <div className="confirmation"><div className="success-mark"><Icon name="check" size={38} /></div><span className="eyebrow">REQUEST SENT</span><h1>You’ve taken a brave next step</h1><p>Lerato has received your mentor request. We’ll let you know here when she responds — usually within 3 to 5 days.</p><Card className="what-next"><h2>While you wait</h2><button onClick={() => go("path")}><span><Icon name="book" /></span><div><strong>Continue your UX learning path</strong><small>Next: Understand your user</small></div><Icon name="arrow" /></button><button onClick={() => go("community")}><span><Icon name="message" /></span><div><strong>Visit the design community</strong><small>Learn with 240 other women</small></div><Icon name="arrow" /></button></Card><Button onClick={() => go("profile")} variant="secondary">View my profile & progress</Button></div>;
+  const { t } = useLanguage();
+  return <div className="confirmation"><div className="success-mark"><Icon name="check" size={38} /></div><span className="eyebrow">{t("REQUEST SENT")}</span><h1>{t("You’ve taken a brave next step")}</h1><p>{t("Lerato has received your mentor request. We’ll let you know here when she responds — usually within 3 to 5 days.")}</p><Card className="what-next"><h2>{t("While you wait")}</h2><button onClick={() => go("path")}><span><Icon name="book" /></span><div><strong>{t("Continue your UX learning path")}</strong><small>{t("Next: Understand your user")}</small></div><Icon name="arrow" /></button><button onClick={() => go("community")}><span><Icon name="message" /></span><div><strong>{t("Visit the design community")}</strong><small>{t("Learn with 240 other women")}</small></div><Icon name="arrow" /></button></Card><Button onClick={() => go("profile")} variant="secondary">{t("View my profile & progress")}</Button></div>;
 }
 
 function Opportunities() {
+  const { t } = useLanguage();
   const [typeFilter, setTypeFilter] = useState("All types");
   const [provinceFilter, setProvinceFilter] = useState("All provinces");
   const [dateFilter, setDateFilter] = useState("Any date");
@@ -332,58 +348,63 @@ function Opportunities() {
   };
   return <div><PageHead eyebrow="JOBS & BURSARIES" title="Find your next open door" text="Bursaries, work experience, junior roles and practical support — all in one place." />
     <div className="filters">
-      <label>Type<select value={typeFilter} onChange={event => setTypeFilter(event.target.value)}><option>All types</option><option>Bursary</option><option>Learnership</option><option>Internship</option><option>Junior job</option><option>Data support</option></select></label>
-      <label>Province<select value={provinceFilter} onChange={event => setProvinceFilter(event.target.value)}><option>All provinces</option><option>Gauteng</option><option>Limpopo</option><option>Western Cape</option><option>Nationwide</option></select></label>
-      <label>Closing date<select value={dateFilter} onChange={event => setDateFilter(event.target.value)}><option>Any date</option><option>This week</option><option>This month</option><option>Ongoing</option></select></label>
+      <label>{t("Type")}<select value={typeFilter} onChange={event => setTypeFilter(event.target.value)}><option value={"All types"}>{t("All types")}</option><option value={"Bursary"}>{t("Bursary")}</option><option value={"Learnership"}>{t("Learnership")}</option><option value={"Internship"}>{t("Internship")}</option><option value={"Junior job"}>{t("Junior job")}</option><option value={"Data support"}>{t("Data support")}</option></select></label>
+      <label>{t("Province")}<select value={provinceFilter} onChange={event => setProvinceFilter(event.target.value)}><option value={"All provinces"}>{t("All provinces")}</option><option value={"Gauteng"}>{t("Gauteng")}</option><option value={"Limpopo"}>{t("Limpopo")}</option><option value={"Western Cape"}>{t("Western Cape")}</option><option value={"Nationwide"}>{t("Nationwide")}</option></select></label>
+      <label>{t("Closing date")}<select value={dateFilter} onChange={event => setDateFilter(event.target.value)}><option value={"Any date"}>{t("Any date")}</option><option value={"This week"}>{t("This week")}</option><option value={"This month"}>{t("This month")}</option><option value={"Ongoing"}>{t("Ongoing")}</option></select></label>
     </div>
-    <div className="results-bar"><p className="result-count">{filteredJobs.length} {filteredJobs.length === 1 ? "opportunity" : "opportunities"} found</p>{(typeFilter !== "All types" || provinceFilter !== "All provinces" || dateFilter !== "Any date") && <button className="text-link" onClick={clearFilters}>Clear filters</button>}</div>
-    {filteredJobs.length > 0 ? <div className="opportunity-list">{filteredJobs.map((job, i) => <Card className="job-card" key={job.title}><div className={`org-mark org-${i % 4}`}>{job.organisation.charAt(0)}</div><div className="job-copy"><div className="tag-row"><Tag tone={job.type === "Data support" ? "green" : "pink"}>{job.type}</Tag><Tag tone="cream">{job.province}</Tag></div><small>{job.organisation}</small><h2>{job.title}</h2><p><Icon name="calendar" size={16} /> {job.deadline}</p></div><Button variant="secondary" icon="arrow">Apply</Button></Card>)}</div> :
-      <Card className="jobs-empty"><span className="feature-icon"><Icon name="briefcase" /></span><h2>No matches yet</h2><p>Try changing one of your filters to see more jobs and bursaries.</p><Button variant="secondary" onClick={clearFilters}>Clear all filters</Button></Card>}
+    <div className="results-bar"><p className="result-count">{filteredJobs.length} {t(filteredJobs.length === 1 ? "opportunity" : "opportunities")}{" "}{t("found")}</p>{(typeFilter !== "All types" || provinceFilter !== "All provinces" || dateFilter !== "Any date") && <button className="text-link" onClick={clearFilters}>{t("Clear filters")}</button>}</div>
+    {filteredJobs.length > 0 ? <div className="opportunity-list">{filteredJobs.map((job, i) => <Card className="job-card" key={t(job.title)}><div className={`org-mark org-${i % 4}`}>{job.organisation.charAt(0)}</div><div className="job-copy"><div className="tag-row"><Tag tone={job.type === "Data support" ? "green" : "pink"}>{t(job.type)}</Tag><Tag tone="cream">{t(job.province)}</Tag></div><small>{job.organisation}</small><h2>{t(job.title)}</h2><p><Icon name="calendar" size={16} /> {t(job.deadline)}</p></div><Button variant="secondary" icon="arrow">{t("Apply")}</Button></Card>)}</div> :
+      <Card className="jobs-empty"><span className="feature-icon"><Icon name="briefcase" /></span><h2>{t("No matches yet")}</h2><p>{t("Try changing one of your filters to see more jobs and bursaries.")}</p><Button variant="secondary" onClick={clearFilters}>{t("Clear all filters")}</Button></Card>}
   </div>;
 }
 
 function Community() {
+  const { t } = useLanguage();
   return <div><PageHead eyebrow="COMMUNITY" title="Learn together, grow together" text="A kind, moderated space to ask questions and share what you’re learning." />
     <div className="community-grid"><div>
-      <Card className="whatsapp-card"><div className="whatsapp-icon"><Icon name="message" /></div><div><Tag tone="green">WhatsApp channel</Tag><h2>SheConnect updates on WhatsApp</h2><p>Get weekly bursary alerts, free learning resources and community news. Only admins can post, so it stays low-data and focused.</p><a className="button button-whatsapp" href="https://www.whatsapp.com/channel/" target="_blank" rel="noreferrer">Join the WhatsApp channel <Icon name="arrow" size={18} /></a><small>WhatsApp opens in a new tab. Your number stays private from other followers.</small></div></Card>
-      <h2 className="subheading">Your groups</h2><div className="group-scroll"><Card className="group-card"><span className="group-icon"><Icon name="book" /></span><div><strong>First-year ICT students</strong><small>1,280 members</small></div></Card><Card className="group-card"><span className="group-icon pink"><Icon name="shield" /></span><div><strong>Women in cybersecurity</strong><small>840 members</small></div></Card></div>
-      <div className="feed-head"><h2>Latest conversations</h2><Button variant="primary">Start a post</Button></div>
-      <div className="post-list"><Card className="post"><div className="post-author"><div className="mini-avatar">KM</div><div><strong>Karabo M.</strong><small>First-year ICT students · 2h</small></div></div><p>I finished my first HTML page today! What small project should I build next to practise?</p><div className="post-actions"><button><Icon name="heart" size={17} /> 24</button><button><Icon name="message" size={17} /> 8 replies</button><button>Report post</button></div></Card><Card className="post"><div className="post-author"><div className="mini-avatar alt">ZS</div><div><strong>Zinhle S.</strong><small>Women in cybersecurity · 5h</small></div></div><p>Sharing a free, low-data introduction to online safety that helped me understand phishing.</p><div className="post-actions"><button><Icon name="heart" size={17} /> 41</button><button><Icon name="message" size={17} /> 12 replies</button><button>Report post</button></div></Card></div></div>
-      <aside className="rules-card"><Icon name="shield" /><h2>Our community promise</h2><p>Be kind. Protect privacy. Share useful knowledge. No harassment or discrimination.</p><button className="text-link">Read community rules <Icon name="arrow" size={16} /></button></aside>
+      <Card className="whatsapp-card"><div className="whatsapp-icon"><Icon name="message" /></div><div><Tag tone="green">{t("WhatsApp channel")}</Tag><h2>{t("SheConnect updates on WhatsApp")}</h2><p>{t("Get weekly bursary alerts, free learning resources and community news. Only admins can post, so it stays low-data and focused.")}</p><a className="button button-whatsapp" href="https://www.whatsapp.com/channel/" target="_blank" rel="noreferrer">{t("Join the WhatsApp channel")}{" "}<Icon name="arrow" size={18} /></a><small>{t("WhatsApp opens in a new tab. Your number stays private from other followers.")}</small></div></Card>
+      <h2 className="subheading">{t("Your groups")}</h2><div className="group-scroll"><Card className="group-card"><span className="group-icon"><Icon name="book" /></span><div><strong>{t("First-year ICT students")}</strong><small>{t("1,280 members")}</small></div></Card><Card className="group-card"><span className="group-icon pink"><Icon name="shield" /></span><div><strong>{t("Women in cybersecurity")}</strong><small>{t("840 members")}</small></div></Card></div>
+      <div className="feed-head"><h2>{t("Latest conversations")}</h2><Button variant="primary">{t("Start a post")}</Button></div>
+      <div className="post-list"><Card className="post"><div className="post-author"><div className="mini-avatar">{t("KM")}</div><div><strong>{t("Karabo M.")}</strong><small>{t("First-year ICT students · 2h")}</small></div></div><p>{t("I finished my first HTML page today! What small project should I build next to practise?")}</p><div className="post-actions"><button><Icon name="heart" size={17} />{" "}{t("24")}</button><button><Icon name="message" size={17} />{" "}{t("8 replies")}</button><button>{t("Report post")}</button></div></Card><Card className="post"><div className="post-author"><div className="mini-avatar alt">{t("ZS")}</div><div><strong>{t("Zinhle S.")}</strong><small>{t("Women in cybersecurity · 5h")}</small></div></div><p>{t("Sharing a free, low-data introduction to online safety that helped me understand phishing.")}</p><div className="post-actions"><button><Icon name="heart" size={17} />{" "}{t("41")}</button><button><Icon name="message" size={17} />{" "}{t("12 replies")}</button><button>{t("Report post")}</button></div></Card></div></div>
+      <aside className="rules-card"><Icon name="shield" /><h2>{t("Our community promise")}</h2><p>{t("Be kind. Protect privacy. Share useful knowledge. No harassment or discrimination.")}</p><button className="text-link">{t("Read community rules")}{" "}<Icon name="arrow" size={16} /></button></aside>
     </div>
   </div>;
 }
 
 function Safety() {
+  const { t } = useLanguage();
   return <div><PageHead eyebrow="SAFETY & SUPPORT" title="You deserve to feel safe online" text="Simple steps to protect yourself, respond to harassment and find help when you need it." />
-    <div className="safety-grid"><Card className="safety-card"><span className="feature-icon"><Icon name="shield" /></span><h2>Protect your information</h2><ul><li>Never share your ID number, home address or passwords.</li><li>Use a different, strong password for each account.</li><li>Check who can see your posts and profile.</li></ul></Card><Card className="safety-card"><span className="feature-icon pink"><Icon name="message" /></span><h2>If someone harasses you</h2><ul><li>Do not reply. Save screenshots as evidence.</li><li>Block and report the account.</li><li>Tell someone you trust. It is not your fault.</li></ul></Card></div>
-    <section className="support-section"><h2>Get support</h2><div className="support-list"><Card><strong>SheConnect safety team</strong><p>Report a mentor, member or post privately.</p><Button variant="secondary">Make a report</Button></Card><Card><strong>Film and Publication Board hotline</strong><p>Report harmful or abusive online content.</p><a href="tel:0800148148">0800 148 148</a></Card><Card><strong>GBV Command Centre</strong><p>24-hour support from trained social workers.</p><a href="tel:0800428428">0800 428 428</a></Card></div></section>
+    <div className="safety-grid"><Card className="safety-card"><span className="feature-icon"><Icon name="shield" /></span><h2>{t("Protect your information")}</h2><ul><li>{t("Never share your ID number, home address or passwords.")}</li><li>{t("Use a different, strong password for each account.")}</li><li>{t("Check who can see your posts and profile.")}</li></ul></Card><Card className="safety-card"><span className="feature-icon pink"><Icon name="message" /></span><h2>{t("If someone harasses you")}</h2><ul><li>{t("Do not reply. Save screenshots as evidence.")}</li><li>{t("Block and report the account.")}</li><li>{t("Tell someone you trust. It is not your fault.")}</li></ul></Card></div>
+    <section className="support-section"><h2>{t("Get support")}</h2><div className="support-list"><Card><strong>{t("SheConnect safety team")}</strong><p>{t("Report a mentor, member or post privately.")}</p><Button variant="secondary">{t("Make a report")}</Button></Card><Card><strong>{t("Film and Publication Board hotline")}</strong><p>{t("Report harmful or abusive online content.")}</p><a href="tel:0800148148">{t("0800 148 148")}</a></Card><Card><strong>{t("GBV Command Centre")}</strong><p>{t("24-hour support from trained social workers.")}</p><a href="tel:0800428428">{t("0800 428 428")}</a></Card></div></section>
   </div>;
 }
 
 function Profile({ saver, setSaver }: { saver: boolean; setSaver: (v: boolean) => void }) {
-  return <div><div className="profile-head"><div className="profile-avatar">TM</div><div><span className="eyebrow">MY PROFILE</span><h1>Hi, Thato</h1><p>You’ve made a strong start. Keep going at your own pace.</p></div></div>
-    <div className="stat-grid"><Card><strong>1</strong><span>Saved career</span></Card><Card><strong>25%</strong><span>Learning progress</span></Card><Card><strong>1</strong><span>Mentor request</span></Card></div>
-    <div className="profile-grid"><Card className="profile-section"><h2>Learning progress</h2><div className="saved-item"><span className="path-icon">◌</span><div><strong>UX Design foundations</strong><Progress value={25} /><small>1 of 4 steps complete</small></div><Icon name="arrow" /></div></Card>
-      <Card className="profile-section"><h2>Saved careers</h2><div className="saved-item"><span className="path-icon">&lt;/&gt;</span><div><strong>Web Development</strong><small>Saved from your career matches</small></div><Icon name="arrow" /></div></Card>
-      <Card className="profile-section"><h2>Mentor requests</h2><div className="saved-item"><span className="mini-avatar">LM</span><div><strong>Lerato Molefe</strong><small><Tag tone="cream">Waiting for reply</Tag></small></div></div></Card>
-      <Card className="profile-section settings"><h2>Settings</h2><label><span><Icon name="globe" /> Language</span><select><option>English</option><option>Sepedi</option></select></label><label><span><Icon name="signal" /> Data saver mode<small>Hide images and reduce data use</small></span><span className="saver-control"><input type="checkbox" checked={saver} onChange={e => setSaver(e.target.checked)} /><span className="switch" /></span></label></Card></div>
+  const { t, language, setLanguage } = useLanguage();
+  return <div><div className="profile-head"><div className="profile-avatar">{t("TM")}</div><div><span className="eyebrow">{t("MY PROFILE")}</span><h1>{t("Hi, Thato")}</h1><p>{t("You’ve made a strong start. Keep going at your own pace.")}</p></div></div>
+    <div className="stat-grid"><Card><strong>{t("1")}</strong><span>{t("Saved career")}</span></Card><Card><strong>{t("25%")}</strong><span>{t("Learning progress")}</span></Card><Card><strong>{t("1")}</strong><span>{t("Mentor request")}</span></Card></div>
+    <div className="profile-grid"><Card className="profile-section"><h2>{t("Learning progress")}</h2><div className="saved-item"><span className="path-icon">{t("◌")}</span><div><strong>{t("UX Design foundations")}</strong><Progress value={25} /><small>{t("1 of 4 steps complete")}</small></div><Icon name="arrow" /></div></Card>
+      <Card className="profile-section"><h2>{t("Saved careers")}</h2><div className="saved-item"><span className="path-icon">{"</>"}</span><div><strong>{t("Web Development")}</strong><small>{t("Saved from your career matches")}</small></div><Icon name="arrow" /></div></Card>
+      <Card className="profile-section"><h2>{t("Mentor requests")}</h2><div className="saved-item"><span className="mini-avatar">{t("LM")}</span><div><strong>{t("Lerato Molefe")}</strong><small><Tag tone="cream">{t("Waiting for reply")}</Tag></small></div></div></Card>
+      <Card className="profile-section settings"><h2>{t("Settings")}</h2><label><span><Icon name="globe" />{" "}{t("Language")}</span><select aria-label={t("Language")} value={language} onChange={e => setLanguage(parseLanguage(e.target.value))}><option value="English">English</option><option value="Sepedi">Sepedi</option></select></label><label><span><Icon name="signal" />{" "}{t("Data saver mode")}<small>{t("Hide images and reduce data use")}</small></span><span className="saver-control"><input type="checkbox" checked={saver} onChange={e => setSaver(e.target.checked)} /><span className="switch" /></span></label></Card></div>
   </div>;
 }
 
 function Story({ go }: { go: (s: Screen) => void }) {
-  return <article className="story"><button className="back-link" onClick={() => go("mentors")}>← Mentors & role models</button><div className="story-hero"><div className="story-portrait optional-visual">NM</div><div><Tag tone="pink">Role-model story</Tag><h1>“I started with curiosity, not confidence.”</h1><p className="lead">How Neo Matlala found her way from a borrowed phone in Limpopo to a career in cloud support.</p><div className="story-byline"><strong>Neo Matlala</strong><span>Cloud Support Specialist · Johannesburg</span></div></div></div>
-    <div className="story-body"><p>I did not grow up thinking tech was for me. At school, I liked solving puzzles, but I had never met a woman who worked with computers.</p><blockquote>“You do not need to know everything before you begin. You only need one next step.”</blockquote><p>My first online course took me three months because I shared a phone and saved lessons for when I had data. Every small lesson counted. Later, a mentor helped me understand which skills employers looked for.</p><h2>Neo’s advice</h2><ul><li>Download learning materials when you have Wi-Fi.</li><li>Practise by helping solve a real problem around you.</li><li>Ask questions early — nobody learns alone.</li></ul><Button onClick={() => go("learn")} icon="arrow">Explore beginner paths</Button></div>
+  const { t } = useLanguage();
+  return <article className="story"><button className="back-link" onClick={() => go("mentors")}>{t("← Mentors & role models")}</button><div className="story-hero"><div className="story-portrait optional-visual">{t("NM")}</div><div><Tag tone="pink">{t("Role-model story")}</Tag><h1>{t("“I started with curiosity, not confidence.”")}</h1><p className="lead">{t("How Neo Matlala found her way from a borrowed phone in Limpopo to a career in cloud support.")}</p><div className="story-byline"><strong>{t("Neo Matlala")}</strong><span>{t("Cloud Support Specialist · Johannesburg")}</span></div></div></div>
+    <div className="story-body"><p>{t("I did not grow up thinking tech was for me. At school, I liked solving puzzles, but I had never met a woman who worked with computers.")}</p><blockquote>{t("“You do not need to know everything before you begin. You only need one next step.”")}</blockquote><p>{t("My first online course took me three months because I shared a phone and saved lessons for when I had data. Every small lesson counted. Later, a mentor helped me understand which skills employers looked for.")}</p><h2>{t("Neo’s advice")}</h2><ul><li>{t("Download learning materials when you have Wi-Fi.")}</li><li>{t("Practise by helping solve a real problem around you.")}</li><li>{t("Ask questions early — nobody learns alone.")}</li></ul><Button onClick={() => go("learn")} icon="arrow">{t("Explore beginner paths")}</Button></div>
   </article>;
 }
 
 function MenuOverlay({ go, close }: { go: (s: Screen) => void; close: () => void }) {
-  return <div className="menu-overlay"><div className="menu-panel"><span className="eyebrow">MORE FROM SHECONNECT</span>{moreItems.map(item => <button key={item.id} onClick={() => { go(item.id); close(); }}><span><Icon name={item.icon} /></span><div><strong>{item.label}</strong><small>{item.sub}</small></div><Icon name="arrow" /></button>)}</div><button className="menu-backdrop" onClick={close} aria-label="Close menu" /></div>;
+  const { t } = useLanguage();
+  return <div className="menu-overlay"><div className="menu-panel"><span className="eyebrow">{t("MORE FROM SHECONNECT")}</span>{moreItems.map(item => <button key={item.id} onClick={() => { go(item.id); close(); }}><span><Icon name={item.icon} /></span><div><strong>{t(item.label)}</strong><small>{t(item.sub)}</small></div><Icon name="arrow" /></button>)}</div><button className="menu-backdrop" onClick={close} aria-label={t("Close menu")} /></div>;
 }
 
-export default function App() {
+function App() {
+  const { language, setLanguage, t } = useLanguage();
   const [screen, setScreen] = useState<Screen>("home");
-  const [language, setLanguage] = useState("English");
   const [saver, setSaver] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const go = (next: Screen) => { setScreen(next); setMenuOpen(false); window.scrollTo({ top: 0, behavior: "smooth" }); };
@@ -408,8 +429,12 @@ export default function App() {
   return <div className={saver ? "app data-saver" : "app"}>
     <Header language={language} setLanguage={setLanguage} saver={saver} setSaver={setSaver} menuOpen={menuOpen} setMenuOpen={setMenuOpen} go={go} />
     <div className="app-shell"><DesktopRail screen={screen} go={go} /><main className="main-content">{content}</main></div>
-    <footer><div className="footer-brand"><span className="brand-mark">S</span><div><strong>SheConnect</strong><p>Your future in tech starts here.</p></div></div><div className="footer-links"><button onClick={() => go("safety")}>Safety</button><button>Privacy</button><button>About</button><button>Help</button></div><small>Made in South Africa for women building their future.</small></footer>
+    <footer><div className="footer-brand"><span className="brand-mark">{t("S")}</span><div><strong>{t("SheConnect")}</strong><p>{t("Your future in tech starts here.")}</p></div></div><div className="footer-links"><button onClick={() => go("safety")}>{t("Safety")}</button><button>{t("Privacy")}</button><button>{t("About")}</button><button>{t("Help")}</button></div><small>{t("Made in South Africa for women building their future.")}</small></footer>
     <BottomNav screen={screen} go={go} />
     {menuOpen && <MenuOverlay go={go} close={() => setMenuOpen(false)} />}
   </div>;
+}
+
+export default function SheConnectApp() {
+  return <LanguageProvider><App /></LanguageProvider>;
 }
