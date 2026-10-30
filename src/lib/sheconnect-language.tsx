@@ -15,7 +15,7 @@ export function parseLanguage(value: unknown): Language {
 const LanguageContext = createContext({
   language: "English" as Language,
   setLanguage: (_language: Language) => {},
-  t: (text: string) => text,
+  t: (text: string | undefined) => text ?? "",
 });
 
 export function LanguageProvider({ children }: { children: ReactNode }) {
@@ -32,7 +32,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     updateLanguage(next);
     try { window.localStorage.setItem(LANGUAGE_STORAGE_KEY, next); } catch { /* Optional device preference. */ }
   };
-  return <LanguageContext.Provider value={{ language, setLanguage, t: text => translate(text, language) }}>{children}</LanguageContext.Provider>;
+  return <LanguageContext.Provider value={{ language, setLanguage, t: text => translate(text ?? "", language) }}>{children}</LanguageContext.Provider>;
 }
 
 export function useLanguage() {
