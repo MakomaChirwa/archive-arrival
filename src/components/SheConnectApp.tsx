@@ -155,7 +155,7 @@ function Home({ go }: { go: (s: Screen) => void }) {
       <div className="hero-visual optional-visual" aria-label={t("Illustration of a young woman exploring technology")}>
         <span className="orbit orbit-one" /><span className="orbit orbit-two" />
         <div className="illustration-person"><div className="hair" /><div className="face" /><div className="body">{t("SC")}</div></div>
-        <div className="float-card code-card">{t("&lt;/&gt;")}<span>{t("Build")}</span></div>
+        <div className="float-card code-card">{"</>"}<span>{t("Build")}</span></div>
         <div className="float-card idea-card"><Icon name="spark" /><span>{t("Grow")}</span></div>
       </div>
     </section>
@@ -384,7 +384,7 @@ function Profile({ saver, setSaver }: { saver: boolean; setSaver: (v: boolean) =
   return <div><div className="profile-head"><div className="profile-avatar">{t("TM")}</div><div><span className="eyebrow">{t("MY PROFILE")}</span><h1>{t("Hi, Thato")}</h1><p>{t("You’ve made a strong start. Keep going at your own pace.")}</p></div></div>
     <div className="stat-grid"><Card><strong>{t("1")}</strong><span>{t("Saved career")}</span></Card><Card><strong>{t("25%")}</strong><span>{t("Learning progress")}</span></Card><Card><strong>{t("1")}</strong><span>{t("Mentor request")}</span></Card></div>
     <div className="profile-grid"><Card className="profile-section"><h2>{t("Learning progress")}</h2><div className="saved-item"><span className="path-icon">{t("◌")}</span><div><strong>{t("UX Design foundations")}</strong><Progress value={25} /><small>{t("1 of 4 steps complete")}</small></div><Icon name="arrow" /></div></Card>
-      <Card className="profile-section"><h2>{t("Saved careers")}</h2><div className="saved-item"><span className="path-icon">{t("&lt;/&gt;")}</span><div><strong>{t("Web Development")}</strong><small>{t("Saved from your career matches")}</small></div><Icon name="arrow" /></div></Card>
+      <Card className="profile-section"><h2>{t("Saved careers")}</h2><div className="saved-item"><span className="path-icon">{"</>"}</span><div><strong>{t("Web Development")}</strong><small>{t("Saved from your career matches")}</small></div><Icon name="arrow" /></div></Card>
       <Card className="profile-section"><h2>{t("Mentor requests")}</h2><div className="saved-item"><span className="mini-avatar">{t("LM")}</span><div><strong>{t("Lerato Molefe")}</strong><small><Tag tone="cream">{t("Waiting for reply")}</Tag></small></div></div></Card>
       <Card className="profile-section settings"><h2>{t("Settings")}</h2><label><span><Icon name="globe" />{" "}{t("Language")}</span><select aria-label={t("Language")} value={language} onChange={e => setLanguage(parseLanguage(e.target.value))}><option value="English">English</option><option value="Sepedi">Sepedi</option></select></label><label><span><Icon name="signal" />{" "}{t("Data saver mode")}<small>{t("Hide images and reduce data use")}</small></span><span className="saver-control"><input type="checkbox" checked={saver} onChange={e => setSaver(e.target.checked)} /><span className="switch" /></span></label></Card></div>
   </div>;
