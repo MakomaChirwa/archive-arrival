@@ -14,7 +14,65 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      learning_progress: {
+        Row: {
+          completed_at: string
+          path_id: string
+          step_index: number
+          user_id: string
+        }
+        Insert: {
+          completed_at?: string
+          path_id: string
+          step_index: number
+          user_id: string
+        }
+        Update: {
+          completed_at?: string
+          path_id?: string
+          step_index?: number
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "learning_progress_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          data_saver: boolean
+          display_name: string
+          education: string
+          id: string
+          interests: string[]
+          language: string
+        }
+        Insert: {
+          created_at?: string
+          data_saver?: boolean
+          display_name?: string
+          education?: string
+          id: string
+          interests?: string[]
+          language?: string
+        }
+        Update: {
+          created_at?: string
+          data_saver?: boolean
+          display_name?: string
+          education?: string
+          id?: string
+          interests?: string[]
+          language?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
