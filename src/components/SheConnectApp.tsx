@@ -404,9 +404,9 @@ function MenuOverlay({ go, close }: { go: (s: Screen) => void; close: () => void
   return <div className="menu-overlay"><div className="menu-panel"><span className="eyebrow">{t("MORE FROM SHECONNECT")}</span>{moreItems.map(item => <button key={item.id} onClick={() => { go(item.id); close(); }}><span><Icon name={item.icon} /></span><div><strong>{t(item.label)}</strong><small>{t(item.sub)}</small></div><Icon name="arrow" /></button>)}</div><button className="menu-backdrop" onClick={close} aria-label={t("Close menu")} /></div>;
 }
 
-function App() {
+function App({ initialScreen = "home" }: { initialScreen?: Screen }) {
   const { language, setLanguage, t } = useLanguage();
-  const [screen, setScreen] = useState<Screen>("home");
+  const [screen, setScreen] = useState<Screen>(initialScreen);
   const [saver, setSaver] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const go = (next: Screen) => { setScreen(next); setMenuOpen(false); window.scrollTo({ top: 0, behavior: "smooth" }); };
@@ -437,6 +437,6 @@ function App() {
   </div>;
 }
 
-export default function SheConnectApp() {
-  return <LanguageProvider><App /></LanguageProvider>;
+export default function SheConnectApp({ initialScreen = "home" }: { initialScreen?: Screen }) {
+  return <App initialScreen={initialScreen} />;
 }
