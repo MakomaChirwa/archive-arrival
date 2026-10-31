@@ -12,6 +12,8 @@ import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
+import { LanguageProvider } from '@/lib/sheconnect-language';
+import { AccountProvider } from '@/lib/sheconnect-account';
 
 function NotFoundComponent() {
   return (
@@ -121,7 +123,7 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-      <Outlet />
+      <LanguageProvider><AccountProvider><Outlet /></AccountProvider></LanguageProvider>
     </QueryClientProvider>
   );
 }
